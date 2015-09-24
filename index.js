@@ -1,3 +1,17 @@
+var path = require('path');
+
+/**
+ * Checks whether string is a path.
+ * Uses the same logic as Module._resolveLookupPaths
+ *
+ * @param {string} string
+ * @returns {boolean}
+ */
+var _isPath = function(string) {
+    var start = string.substring(0, 2);
+    return start === './' || start === '..';
+};
+
 /**
  * Parses given definition.
  *
@@ -6,6 +20,11 @@
  */
 var _parseDefinition = function(definition) {
     var splitter = definition.split(' as ');
+
+    if (_isPath(splitter[0])) {
+        splitter[0] = path.resolve(splitter[0]);
+    }
+
     return {
         requires: splitter[0],
         name: splitter[1] || splitter[0]
@@ -20,6 +39,9 @@ var _parseDefinition = function(definition) {
  */
 var requirist = function(modules) {
     var bundle = {};
+
+    var path = require('path');
+    console.log(path.resolve('./package.json'));
 
     modules.forEach(function(definition) {
         definition = _parseDefinition(definition);
