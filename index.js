@@ -41,7 +41,6 @@ var requirist = function(modules) {
     var bundle = {};
 
     var path = require('path');
-    console.log(path.resolve('./package.json'));
 
     modules.forEach(function(definition) {
         definition = _parseDefinition(definition);
