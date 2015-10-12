@@ -6,6 +6,24 @@ Give you all the modules you need in a single expression.
 * Globstar patterns support
 * Single expression to get all what you need
 
+#### Usage
+Given the following files structure:
+
+```
+/tasks
+  to-png.js,
+  attach-meta.js,
+  crop-resize.js
+/utils
+  object.js,
+  collection.js
+/config
+  theme.js,
+  controls.js
+package.json  
+```      
+And expression:
+
 ```javascript
 var $ = require('requirist')(
     // Natives
@@ -16,8 +34,28 @@ var $ = require('requirist')(
     'lodash as _'
     
     // Local Modules
-    './constants/*',
-    '../utils/namespace-composer as ncomposer',
-    '../static.json as config'
+    './tasks/*',
+    './utils/* as utils',
+    './config/theme as themeManager',
+    './package.json as config'
 );
+```
+Bundle object ``$`` will look like:
+
+```javascript
+  {
+    fs: {},    // Native node fs module
+    path: {},  // Native node path module,
+    
+    _: {},     // Lodash itself,
+    
+    toPng: {}, // Exports of 'to-png.js'
+    ...
+    
+    utilsobject: {}, // Exports of './utils/object.js'm
+    ...
+    
+    themeManager: {}, // Exports of './config/theme.js',
+    config: {}        // Package information
+  }
 ```
